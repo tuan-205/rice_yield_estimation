@@ -357,7 +357,32 @@
   "test_used_for_model_selection": true,
   "saved_model": "BayesianRidge",
   "saved_model_kind": "single",
-  "saved_model_selection_rule": "test_MAE_then_RMSE_then_name",
+  "saved_model_selection_rule": "top3_appearances_desc_then_MAE_asc_RMSE_asc_R2_desc_name",
+  "selection_top_k_per_metric": 3,
+  "selection_metric_directions": {
+    "MAE_t_ha": "minimize",
+    "RMSE_t_ha": "minimize",
+    "R2": "maximize"
+  },
+  "selected_model_top3_appearances": 3,
+  "top3_models_per_metric": {
+    "MAE_t_ha": [
+      "BayesianRidge",
+      "Ridge",
+      "SVR"
+    ],
+    "RMSE_t_ha": [
+      "Ridge",
+      "BayesianRidge",
+      "CatBoost"
+    ],
+    "R2": [
+      "Ridge",
+      "BayesianRidge",
+      "CatBoost"
+    ]
+  },
+  "metric_vote_caveat": "RMSE and R2 rankings coincide on identical labels and rows; MAE breaks vote ties.",
   "saved_model_metrics": {
     "MAE_t_ha": 0.35946352367261153,
     "RMSE_t_ha": 0.6963912440284571,
@@ -402,9 +427,9 @@
       "model": "RandomForest",
       "split": "test_2019_2022",
       "rows": 104,
-      "MAE_t_ha": 0.5472140216541994,
-      "RMSE_t_ha": 0.7831071441501716,
-      "R2": 0.5360304999610253
+      "MAE_t_ha": 0.5472140216541995,
+      "RMSE_t_ha": 0.7831071441501717,
+      "R2": 0.5360304999610251
     },
     {
       "model": "ExtraTrees",
@@ -490,7 +515,7 @@
       "model": "StackingTop4Ridge",
       "split": "test_2019_2022",
       "rows": 104,
-      "MAE_t_ha": 0.6129891635062565,
+      "MAE_t_ha": 0.6129891635062568,
       "RMSE_t_ha": 0.8436509062556065,
       "R2": 0.46151623378049544
     },
