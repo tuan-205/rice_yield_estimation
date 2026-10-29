@@ -1,0 +1,495 @@
+{
+  "experiment": "11_fixed_base_models_top4_ridge_stacking_and_catboost",
+  "target": "nang_suat_t_ha",
+  "target_unit": "tonne_per_hectare",
+  "feature_names": [
+    "adm1_code",
+    "mua_vu",
+    "nam",
+    "temperature_mean_c",
+    "temperature_min_c",
+    "temperature_max_c",
+    "rainfall_sum_mm",
+    "rainfall_max_month_mm",
+    "rainy_months_100mm",
+    "ndvi_mean",
+    "ndvi_max",
+    "evi_mean",
+    "evi_max",
+    "vci_mean",
+    "vci_min",
+    "vi_months_available",
+    "vi_months_quality80",
+    "vi_quality80_ratio",
+    "vi_mean_coverage_pct"
+  ],
+  "raw_preprocessing": {
+    "numeric_features": [
+      "nam",
+      "temperature_mean_c",
+      "temperature_min_c",
+      "temperature_max_c",
+      "rainfall_sum_mm",
+      "rainfall_max_month_mm",
+      "rainy_months_100mm",
+      "ndvi_mean",
+      "ndvi_max",
+      "evi_mean",
+      "evi_max",
+      "vci_mean",
+      "vci_min",
+      "vi_months_available",
+      "vi_months_quality80",
+      "vi_quality80_ratio",
+      "vi_mean_coverage_pct"
+    ],
+    "categorical_features": [
+      "adm1_code",
+      "mua_vu"
+    ],
+    "categorical_missing_token": "__MISSING__",
+    "numeric_missing": "native_catboost_nan_mode_Min",
+    "scaling": null,
+    "manual_one_hot": false
+  },
+  "sklearn_preprocessing": {
+    "numeric_imputation": "median",
+    "add_missing_indicator": true,
+    "keep_empty_features": true,
+    "one_hot_unknown": "ignore",
+    "scale_numeric_for": [
+      "BayesianRidge",
+      "SVR",
+      "Ridge",
+      "ElasticNet"
+    ]
+  },
+  "model_order": [
+    "RandomForest",
+    "ExtraTrees",
+    "XGBoost",
+    "DecisionTree",
+    "BayesianRidge",
+    "GradientBoosting",
+    "HistGradientBoosting",
+    "SVR",
+    "Ridge",
+    "ElasticNet",
+    "Dummy",
+    "StackingTop4Ridge",
+    "CatBoost"
+  ],
+  "base_order": [
+    "RandomForest",
+    "ExtraTrees",
+    "XGBoost",
+    "DecisionTree",
+    "BayesianRidge",
+    "GradientBoosting",
+    "HistGradientBoosting",
+    "SVR",
+    "Ridge",
+    "ElasticNet",
+    "Dummy"
+  ],
+  "model_parameters": {
+    "RandomForest": {
+      "bootstrap": true,
+      "ccp_alpha": 0.0,
+      "criterion": "squared_error",
+      "max_depth": null,
+      "max_features": 1.0,
+      "max_leaf_nodes": null,
+      "max_samples": null,
+      "min_impurity_decrease": 0.0,
+      "min_samples_leaf": 1,
+      "min_samples_split": 2,
+      "min_weight_fraction_leaf": 0.0,
+      "monotonic_cst": null,
+      "n_estimators": 200,
+      "n_jobs": 4,
+      "oob_score": false,
+      "random_state": 42,
+      "verbose": 0,
+      "warm_start": false
+    },
+    "ExtraTrees": {
+      "bootstrap": false,
+      "ccp_alpha": 0.0,
+      "criterion": "squared_error",
+      "max_depth": null,
+      "max_features": 1.0,
+      "max_leaf_nodes": null,
+      "max_samples": null,
+      "min_impurity_decrease": 0.0,
+      "min_samples_leaf": 1,
+      "min_samples_split": 2,
+      "min_weight_fraction_leaf": 0.0,
+      "monotonic_cst": null,
+      "n_estimators": 200,
+      "n_jobs": 4,
+      "oob_score": false,
+      "random_state": 42,
+      "verbose": 0,
+      "warm_start": false
+    },
+    "XGBoost": {
+      "objective": "reg:squarederror",
+      "base_score": null,
+      "booster": null,
+      "callbacks": null,
+      "colsample_bylevel": null,
+      "colsample_bynode": null,
+      "colsample_bytree": 1.0,
+      "device": null,
+      "early_stopping_rounds": null,
+      "enable_categorical": false,
+      "eval_metric": null,
+      "feature_types": null,
+      "feature_weights": null,
+      "gamma": null,
+      "grow_policy": null,
+      "importance_type": null,
+      "interaction_constraints": null,
+      "learning_rate": 0.05,
+      "max_bin": null,
+      "max_cat_threshold": null,
+      "max_cat_to_onehot": null,
+      "max_delta_step": null,
+      "max_depth": 6,
+      "max_leaves": null,
+      "min_child_weight": null,
+      "missing": NaN,
+      "monotone_constraints": null,
+      "multi_strategy": null,
+      "n_estimators": 200,
+      "n_jobs": 4,
+      "num_parallel_tree": null,
+      "random_state": 42,
+      "reg_alpha": null,
+      "reg_lambda": 1.0,
+      "sampling_method": null,
+      "scale_pos_weight": null,
+      "subsample": 1.0,
+      "tree_method": "hist",
+      "validate_parameters": null,
+      "verbosity": 0
+    },
+    "DecisionTree": {
+      "ccp_alpha": 0.0,
+      "criterion": "squared_error",
+      "max_depth": null,
+      "max_features": null,
+      "max_leaf_nodes": null,
+      "min_impurity_decrease": 0.0,
+      "min_samples_leaf": 1,
+      "min_samples_split": 2,
+      "min_weight_fraction_leaf": 0.0,
+      "monotonic_cst": null,
+      "random_state": 42,
+      "splitter": "best"
+    },
+    "BayesianRidge": {
+      "alpha_1": 1e-06,
+      "alpha_2": 1e-06,
+      "alpha_init": null,
+      "compute_score": false,
+      "copy_X": true,
+      "fit_intercept": true,
+      "lambda_1": 1e-06,
+      "lambda_2": 1e-06,
+      "lambda_init": null,
+      "max_iter": 300,
+      "tol": 0.001,
+      "verbose": false
+    },
+    "GradientBoosting": {
+      "alpha": 0.9,
+      "ccp_alpha": 0.0,
+      "criterion": "friedman_mse",
+      "init": null,
+      "learning_rate": 0.1,
+      "loss": "squared_error",
+      "max_depth": 3,
+      "max_features": null,
+      "max_leaf_nodes": null,
+      "min_impurity_decrease": 0.0,
+      "min_samples_leaf": 1,
+      "min_samples_split": 2,
+      "min_weight_fraction_leaf": 0.0,
+      "n_estimators": 100,
+      "n_iter_no_change": null,
+      "random_state": 42,
+      "subsample": 1.0,
+      "tol": 0.0001,
+      "validation_fraction": 0.1,
+      "verbose": 0,
+      "warm_start": false
+    },
+    "HistGradientBoosting": {
+      "categorical_features": "from_dtype",
+      "early_stopping": false,
+      "interaction_cst": null,
+      "l2_regularization": 0.0,
+      "learning_rate": 0.1,
+      "loss": "squared_error",
+      "max_bins": 255,
+      "max_depth": null,
+      "max_features": 1.0,
+      "max_iter": 100,
+      "max_leaf_nodes": 31,
+      "min_samples_leaf": 20,
+      "monotonic_cst": null,
+      "n_iter_no_change": 10,
+      "quantile": null,
+      "random_state": 42,
+      "scoring": "loss",
+      "tol": 1e-07,
+      "validation_fraction": 0.1,
+      "verbose": 0,
+      "warm_start": false
+    },
+    "SVR": {
+      "C": 1.0,
+      "cache_size": 200,
+      "coef0": 0.0,
+      "degree": 3,
+      "epsilon": 0.1,
+      "gamma": "scale",
+      "kernel": "rbf",
+      "max_iter": -1,
+      "shrinking": true,
+      "tol": 0.001,
+      "verbose": false
+    },
+    "Ridge": {
+      "alpha": 1.0,
+      "copy_X": true,
+      "fit_intercept": true,
+      "max_iter": null,
+      "positive": false,
+      "random_state": null,
+      "solver": "auto",
+      "tol": 0.0001
+    },
+    "ElasticNet": {
+      "alpha": 1.0,
+      "copy_X": true,
+      "fit_intercept": true,
+      "l1_ratio": 0.5,
+      "max_iter": 10000,
+      "positive": false,
+      "precompute": false,
+      "random_state": 42,
+      "selection": "cyclic",
+      "tol": 0.0001,
+      "warm_start": false
+    },
+    "Dummy": {
+      "constant": null,
+      "quantile": null,
+      "strategy": "mean"
+    },
+    "CatBoost": {
+      "iterations": 500,
+      "learning_rate": 0.05,
+      "depth": 6,
+      "l2_leaf_reg": 3.0,
+      "loss_function": "RMSE",
+      "nan_mode": "Min",
+      "thread_count": 4,
+      "random_seed": 42,
+      "verbose": false,
+      "has_time": true,
+      "allow_writing_files": false,
+      "boosting_type": "Ordered",
+      "task_type": "CPU",
+      "cat_features": [
+        "adm1_code",
+        "mua_vu"
+      ]
+    }
+  },
+  "top4": [
+    "GradientBoosting",
+    "ExtraTrees",
+    "RandomForest",
+    "XGBoost"
+  ],
+  "best_base_on_validation": "GradientBoosting",
+  "top4_selection": "11_base_validation_MAE_then_RMSE_then_name; excludes_separate_CatBoost",
+  "meta_learner": {
+    "type": "StandardScaler_then_Ridge",
+    "alpha": 10.0,
+    "input": "four_out_of_sample_predictions_only",
+    "passthrough": false,
+    "fit_years": [
+      2016,
+      2017,
+      2018
+    ],
+    "fit_rows": 76
+  },
+  "train_period": [
+    2000,
+    2015
+  ],
+  "development_period": [
+    2016,
+    2018
+  ],
+  "final_fit_period": [
+    2000,
+    2018
+  ],
+  "test_period": [
+    2019,
+    2022
+  ],
+  "split_rows": {
+    "train": 399,
+    "development": 76,
+    "test": 104
+  },
+  "stacking_validation_score": null,
+  "stacking_validation_score_reason": "2016-2018 labels used to select bases and fit meta learner",
+  "test_used_for_fitting_or_top4_selection": false,
+  "random_state": 42,
+  "sort_keys": [
+    "nam",
+    "mua_vu",
+    "adm1_code"
+  ],
+  "vci_baseline_years": [
+    2000,
+    2015
+  ],
+  "rice_mask_year": 2020,
+  "window_policy": "dong_xuan=Nov-Apr; he_thu-thu_dong=Apr-Nov (proxy)",
+  "data_file": "data/processed/rice_ml_features_2000_2022.csv",
+  "data_sha256": "f044e111e70e68037b201a286d42cff22b980a0c124ee36f265811e6125d691c",
+  "versions": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "sklearn": "1.8.0",
+    "xgboost": "3.0.5",
+    "catboost": "1.2.8",
+    "joblib": "1.5.3",
+    "matplotlib": "3.10.8"
+  },
+  "limitations": [
+    "Retrospective estimation with static 2020 rice mask.",
+    "Observation windows must be complete; not pre-harvest forecasting.",
+    "VCI 2000-2015 baseline unsuitable for forward OOF before 2016.",
+    "2016-2018 is development data for selection and meta fitting.",
+    "Same 2019-2022 test period already reported in an earlier experiment.",
+    "No unseen-province test or statistical significance claim."
+  ],
+  "test_metrics": [
+    {
+      "model": "RandomForest",
+      "split": "test_2019_2022",
+      "rows": 104,
+      "MAE_t_ha": 0.5472140216541995,
+      "RMSE_t_ha": 0.7831071441501718,
+      "R2": 0.536030499961025
+    },
+    {
+      "model": "ExtraTrees",
+      "split": "test_2019_2022",
+      "rows": 104,
+      "MAE_t_ha": 0.5053565787394921,
+      "RMSE_t_ha": 0.812980971436704,
+      "R2": 0.4999564593373005
+    },
+    {
+      "model": "XGBoost",
+      "split": "test_2019_2022",
+      "rows": 104,
+      "MAE_t_ha": 0.5650071344457596,
+      "RMSE_t_ha": 0.8329235693299083,
+      "R2": 0.4751232164500271
+    },
+    {
+      "model": "DecisionTree",
+      "split": "test_2019_2022",
+      "rows": 104,
+      "MAE_t_ha": 0.6491123463927857,
+      "RMSE_t_ha": 0.9675271197268664,
+      "R2": 0.29177157303395473
+    },
+    {
+      "model": "BayesianRidge",
+      "split": "test_2019_2022",
+      "rows": 104,
+      "MAE_t_ha": 0.35946352367261153,
+      "RMSE_t_ha": 0.6963912440284571,
+      "R2": 0.6330949712249029
+    },
+    {
+      "model": "GradientBoosting",
+      "split": "test_2019_2022",
+      "rows": 104,
+      "MAE_t_ha": 0.5186837413119709,
+      "RMSE_t_ha": 0.7294156128651498,
+      "R2": 0.597471003767641
+    },
+    {
+      "model": "HistGradientBoosting",
+      "split": "test_2019_2022",
+      "rows": 104,
+      "MAE_t_ha": 0.5461699615891958,
+      "RMSE_t_ha": 0.783803793589259,
+      "R2": 0.5352046414207345
+    },
+    {
+      "model": "SVR",
+      "split": "test_2019_2022",
+      "rows": 104,
+      "MAE_t_ha": 0.4366848181946932,
+      "RMSE_t_ha": 0.7478745482178011,
+      "R2": 0.5768400400867892
+    },
+    {
+      "model": "Ridge",
+      "split": "test_2019_2022",
+      "rows": 104,
+      "MAE_t_ha": 0.3601902806988457,
+      "RMSE_t_ha": 0.6934866760817183,
+      "R2": 0.6361492259639887
+    },
+    {
+      "model": "ElasticNet",
+      "split": "test_2019_2022",
+      "rows": 104,
+      "MAE_t_ha": 1.0428656975450303,
+      "RMSE_t_ha": 1.3048387143735396,
+      "R2": -0.28813306329938615
+    },
+    {
+      "model": "Dummy",
+      "split": "test_2019_2022",
+      "rows": 104,
+      "MAE_t_ha": 1.0715162140590697,
+      "RMSE_t_ha": 1.3604002575707503,
+      "R2": -0.4001690426684035
+    },
+    {
+      "model": "StackingTop4Ridge",
+      "split": "test_2019_2022",
+      "rows": 104,
+      "MAE_t_ha": 0.6129891635062568,
+      "RMSE_t_ha": 0.8436509062556065,
+      "R2": 0.46151623378049544
+    },
+    {
+      "model": "CatBoost",
+      "split": "test_2019_2022",
+      "rows": 104,
+      "MAE_t_ha": 0.4409734263806823,
+      "RMSE_t_ha": 0.7024982227256281,
+      "R2": 0.6266316332617698
+    }
+  ]
+}
