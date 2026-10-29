@@ -4,6 +4,8 @@ from functools import lru_cache
 import os,time,threading,logging
 from fastapi import FastAPI,HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from pathlib import Path
 from pydantic import BaseModel,Field
 from typing import Literal
 from .gee_provider import GEEProvider,PROVINCE_CODES,require_complete
@@ -43,3 +45,6 @@ def monthly(request:SeasonRequest):
         if len(_cache)>=128:_cache.clear()
         _cache[key]=(time.monotonic(),response)
         return response
+
+# Only serve built web assets. Credential files and backend source are never exposed.
+app.mount("/", StaticFiles(directory=Path(__file__).resolve().parents[1] / "dist", html=True, check_dir=False), name="frontend")

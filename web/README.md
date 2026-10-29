@@ -22,6 +22,25 @@ python -m http.server 8080 --directory web/dist
 
 Mở `http://localhost:8080`. Chế độ lịch sử và CSV không cần khóa API hoặc backend.
 
+## Dùng file JSON xác thực — không nhập API URL
+
+Giữ file khóa service account ở ngoài thư mục dự án, ví dụ `C:\gee-keys\gee-key.json`. Không gửi nội dung khóa vào chat, GitHub hoặc upload vào web. Chương trình chỉ nhận đường dẫn trên máy bạn và Google SDK đọc file đó ở backend.
+
+Từ gốc repository, sau khi `git pull`:
+
+```sh
+python -m pip install -r web/api/requirements.txt
+python -m web.run_local --credentials "C:\gee-keys\gee-key.json" --check-gee
+```
+
+Trên macOS/Linux thay bằng đường dẫn thật, ví dụ `"/Users/ban/gee-keys/gee-key.json"`. Mặc định đã điền Project ID và Asset ID của bạn. `--check-gee` kiểm tra khóa và quyền đọc asset trước khi khởi động; không in khóa ra màn hình.
+
+Mở **http://127.0.0.1:8080** trên cùng máy. Web tự nhận backend nên không cần nhập URL. Chọn Vụ mới → tỉnh, năm và vụ → Google Earth Engine → Ước lượng. Dừng bằng Ctrl+C. Chỉ mở địa chỉ cục bộ này khi chạy bằng file JSON trên máy; bản Sites online không thể đọc file khóa trên máy bạn.
+
+Nếu file hợp lệ nhưng vẫn bị từ chối, cấp quyền đọc asset cho địa chỉ `client_email` của service account, đồng thời bảo đảm service account có quyền sử dụng project Earth Engine. Không cần gửi `private_key` cho bất kỳ ai.
+
+Nếu dùng khóa trên máy chủ riêng, đặt biến `GOOGLE_APPLICATION_CREDENTIALS` bằng đường dẫn file khóa đã mount ở máy chủ. Backend cũng phục vụ web tại `/`, tự kết nối cùng origin. Trên Cloud Run vẫn có thể dùng service account gắn với runtime thay cho file khóa.
+
 ## Thử vụ 2026 bằng CSV GEE (không cần dựng API)
 
 1. Mở https://code.earthengine.google.com/ và chọn Cloud Project `du-lieu-ve-tinh-vietnam` đã đăng ký Earth Engine.
@@ -74,6 +93,7 @@ cd web
 npm ci
 npm test
 node tests/ui.test.mjs
+node tests/local-ui.test.mjs
 # Từ gốc repository, sau khi cài httpx:
 python -m unittest web.tests.test_api -v
 ```

@@ -24,7 +24,11 @@ class GEEProvider:
     def _initialize(self):
         if self._initialized:return
         import ee,google.auth
-        credentials,_=google.auth.default()
+        # File service-account credentials need explicit OAuth scopes; attached Cloud Run ADC uses its defaults.
+        if os.getenv('GOOGLE_APPLICATION_CREDENTIALS'):
+            credentials,_=google.auth.default(scopes=ee.oauth.SCOPES)
+        else:
+            credentials,_=google.auth.default()
         ee.Initialize(credentials=credentials,project=self.project_id)
         self._initialized=True
     def monthly(self,code:int,year:int,season:str):
