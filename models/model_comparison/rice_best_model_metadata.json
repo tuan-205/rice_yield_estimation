@@ -354,6 +354,16 @@
   "stacking_validation_score": null,
   "stacking_validation_score_reason": "2016-2018 labels used to select bases and fit meta learner",
   "test_used_for_fitting_or_top4_selection": false,
+  "test_used_for_model_selection": true,
+  "saved_model": "BayesianRidge",
+  "saved_model_kind": "single",
+  "saved_model_selection_rule": "test_MAE_then_RMSE_then_name",
+  "saved_model_metrics": {
+    "MAE_t_ha": 0.35946352367261153,
+    "RMSE_t_ha": 0.6963912440284571,
+    "R2": 0.6330949712249029
+  },
+  "saved_model_metrics_are_independent_after_selection": false,
   "random_state": 42,
   "sort_keys": [
     "nam",
@@ -384,16 +394,17 @@
     "VCI 2000-2015 baseline unsuitable for forward OOF before 2016.",
     "2016-2018 is development data for selection and meta fitting.",
     "Same 2019-2022 test period already reported in an earlier experiment.",
-    "No unseen-province test or statistical significance claim."
+    "No unseen-province test or statistical significance claim.",
+    "Winner chosen using test metrics; new data needed for independent evaluation."
   ],
   "test_metrics": [
     {
       "model": "RandomForest",
       "split": "test_2019_2022",
       "rows": 104,
-      "MAE_t_ha": 0.5472140216541995,
-      "RMSE_t_ha": 0.7831071441501718,
-      "R2": 0.536030499961025
+      "MAE_t_ha": 0.5472140216541994,
+      "RMSE_t_ha": 0.7831071441501716,
+      "R2": 0.5360304999610253
     },
     {
       "model": "ExtraTrees",
@@ -401,7 +412,7 @@
       "rows": 104,
       "MAE_t_ha": 0.5053565787394921,
       "RMSE_t_ha": 0.812980971436704,
-      "R2": 0.4999564593373005
+      "R2": 0.4999564593373004
     },
     {
       "model": "XGBoost",
@@ -479,7 +490,7 @@
       "model": "StackingTop4Ridge",
       "split": "test_2019_2022",
       "rows": 104,
-      "MAE_t_ha": 0.6129891635062568,
+      "MAE_t_ha": 0.6129891635062565,
       "RMSE_t_ha": 0.8436509062556065,
       "R2": 0.46151623378049544
     },
