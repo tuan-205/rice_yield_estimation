@@ -1,0 +1,10 @@
+import fs from 'node:fs';import assert from 'node:assert/strict';import {JSDOM} from 'jsdom';
+const dom=new JSDOM(fs.readFileSync(new URL('../dist/index.html',import.meta.url),'utf8'),{url:'https://test.example/'});
+globalThis.window=dom.window;globalThis.document=dom.window.document;globalThis.URL=dom.window.URL;
+dom.window.HTMLDialogElement.prototype.showModal=function(){this.open=true};dom.window.HTMLDialogElement.prototype.close=function(){this.open=false};
+globalThis.fetch=async url=>{const name=String(url).split('/').pop();return {ok:true,json:async()=>JSON.parse(fs.readFileSync(new URL('../dist/data/'+name,import.meta.url),'utf8'))}};
+const $=id=>document.getElementById(id);const until=async fn=>{for(let i=0;i<100;i++){if(fn())return;await new Promise(r=>setTimeout(r,20));}throw Error('UI timeout')};
+await import('../dist/app.js');await until(()=>$('yield-value').textContent!=='—');assert.match($('result-location').textContent,/An Giang/);assert.equal(document.querySelectorAll('#model-table tbody tr').length,13);
+document.querySelector('[data-view="models"]').click();assert.equal($('models-view').hidden,false);$('open-data').click();assert.equal($('data-dialog').open,true);$('close-data').click();$('mode-new').click();assert.equal($('year').value,'2026');$('estimate-form').dispatchEvent(new dom.window.Event('submit',{cancelable:true}));await until(()=>$('form-message').textContent.includes('Chưa kết nối'));assert.equal($('yield-value').textContent,'—');
+$('season').value='he_thu-thu_dong';$('season').dispatchEvent(new dom.window.Event('change'));assert.match($('form-message').textContent,/chưa hoàn tất/);
+console.log('PASS: rendered real historical prediction; 13-model table; navigation/dialog; new-year API absence; unfinished season blocks result.');

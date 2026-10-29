@@ -1,0 +1,1 @@
+{"name":"lua-yield-lab","private":true,"type":"module","scripts":{"test":"node tests/model.test.mjs"},"devDependencies":{"jsdom":"^26.1.0"}}
