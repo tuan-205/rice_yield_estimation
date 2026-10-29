@@ -1,0 +1,198 @@
+{
+  "model_type": "CatBoostRegressor",
+  "target": "nang_suat_t_ha",
+  "target_unit": "tonne_per_hectare",
+  "feature_names": [
+    "adm1_code",
+    "mua_vu",
+    "nam",
+    "temperature_mean_c",
+    "temperature_min_c",
+    "temperature_max_c",
+    "rainfall_sum_mm",
+    "rainfall_max_month_mm",
+    "rainy_months_100mm",
+    "ndvi_mean",
+    "ndvi_max",
+    "evi_mean",
+    "evi_max",
+    "vci_mean",
+    "vci_min",
+    "vi_months_available",
+    "vi_months_quality80",
+    "vi_quality80_ratio",
+    "vi_mean_coverage_pct"
+  ],
+  "preprocessing": {
+    "numeric_features": [
+      "nam",
+      "temperature_mean_c",
+      "temperature_min_c",
+      "temperature_max_c",
+      "rainfall_sum_mm",
+      "rainfall_max_month_mm",
+      "rainy_months_100mm",
+      "ndvi_mean",
+      "ndvi_max",
+      "evi_mean",
+      "evi_max",
+      "vci_mean",
+      "vci_min",
+      "vi_months_available",
+      "vi_months_quality80",
+      "vi_quality80_ratio",
+      "vi_mean_coverage_pct"
+    ],
+    "categorical_features": [
+      "adm1_code",
+      "mua_vu"
+    ],
+    "categorical_missing_token": "__MISSING__",
+    "numeric_missing": "native_catboost_nan_mode_Min",
+    "scaling": null,
+    "manual_one_hot": false
+  },
+  "common_params": {
+    "loss_function": "RMSE",
+    "eval_metric": "MAE",
+    "random_seed": 42,
+    "thread_count": 4,
+    "task_type": "CPU",
+    "cat_features": [
+      "adm1_code",
+      "mua_vu"
+    ],
+    "nan_mode": "Min",
+    "has_time": true,
+    "boosting_type": "Ordered",
+    "allow_writing_files": false,
+    "verbose": false
+  },
+  "selected_config": {
+    "depth": 6,
+    "learning_rate": 0.03,
+    "l2_leaf_reg": 3.0
+  },
+  "selected_candidate_id": 9,
+  "iterations": 131,
+  "selection_rule": "validation_MAE_then_RMSE_then_tree_count_then_candidate_id",
+  "search_configs": [
+    {
+      "depth": 4,
+      "learning_rate": 0.03,
+      "l2_leaf_reg": 3.0
+    },
+    {
+      "depth": 4,
+      "learning_rate": 0.03,
+      "l2_leaf_reg": 10.0
+    },
+    {
+      "depth": 4,
+      "learning_rate": 0.06,
+      "l2_leaf_reg": 3.0
+    },
+    {
+      "depth": 4,
+      "learning_rate": 0.06,
+      "l2_leaf_reg": 10.0
+    },
+    {
+      "depth": 5,
+      "learning_rate": 0.03,
+      "l2_leaf_reg": 3.0
+    },
+    {
+      "depth": 5,
+      "learning_rate": 0.03,
+      "l2_leaf_reg": 10.0
+    },
+    {
+      "depth": 5,
+      "learning_rate": 0.06,
+      "l2_leaf_reg": 3.0
+    },
+    {
+      "depth": 5,
+      "learning_rate": 0.06,
+      "l2_leaf_reg": 10.0
+    },
+    {
+      "depth": 6,
+      "learning_rate": 0.03,
+      "l2_leaf_reg": 3.0
+    },
+    {
+      "depth": 6,
+      "learning_rate": 0.03,
+      "l2_leaf_reg": 10.0
+    },
+    {
+      "depth": 6,
+      "learning_rate": 0.06,
+      "l2_leaf_reg": 3.0
+    },
+    {
+      "depth": 6,
+      "learning_rate": 0.06,
+      "l2_leaf_reg": 10.0
+    }
+  ],
+  "max_iterations": 1500,
+  "early_stopping_rounds": 100,
+  "random_seed": 42,
+  "train_period": [
+    2000,
+    2015
+  ],
+  "validation_period": [
+    2016,
+    2018
+  ],
+  "final_fit_period": [
+    2000,
+    2018
+  ],
+  "test_period": [
+    2019,
+    2022
+  ],
+  "sort_keys": [
+    "nam",
+    "mua_vu",
+    "adm1_code"
+  ],
+  "validation_used_for_selection": true,
+  "test_used_for_selection": false,
+  "data_file": "data/processed/rice_ml_features_2000_2022.csv",
+  "data_sha256": "f044e111e70e68037b201a286d42cff22b980a0c124ee36f265811e6125d691c",
+  "data_rows": 579,
+  "final_fit_rows": 475,
+  "window_policy": "dong_xuan=Nov-Apr; he_thu-thu_dong=Apr-Nov (proxy)",
+  "vci_baseline_years": [
+    2000,
+    2015
+  ],
+  "rice_mask_year": 2020,
+  "scope": "retrospective_end_of_window_estimation_in_observed_provinces",
+  "limitations": [
+    "Static 2020 rice mask uses future spatial information for earlier years.",
+    "VCI baseline 2000-2015 is unsuitable for forward validation before 2015.",
+    "Full observation windows are required; not a pre-harvest forecast.",
+    "No unseen-province validation or uncertainty interval.",
+    "Validation scores include hyperparameter and iteration selection bias."
+  ],
+  "versions": {
+    "python": "3.12.14",
+    "catboost": "1.2.8",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "sklearn": "1.8.0",
+    "matplotlib": "3.10.8"
+  },
+  "test_metrics": {
+    "MAE_t_ha": 0.47237652019726706,
+    "RMSE_t_ha": 0.7563090860075149,
+    "R2": 0.567241411044267
+  }
+}

@@ -1,0 +1,4 @@
+﻿split,year_min,year_max,rows,provinces
+train,2000,2015,399,13
+validation,2016,2018,76,13
+test,2019,2022,104,13
