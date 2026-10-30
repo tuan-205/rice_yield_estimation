@@ -1,0 +1,19 @@
+import fs from 'node:fs';import assert from 'node:assert/strict';import {JSDOM} from 'jsdom';
+const dom=new JSDOM(fs.readFileSync(new URL('../dist/index.html',import.meta.url),'utf8'),{url:'https://test.example/'});
+globalThis.window=dom.window;globalThis.document=dom.window.document;globalThis.URL=dom.window.URL;globalThis.Event=dom.window.Event;
+dom.window.HTMLDialogElement.prototype.showModal=function(){this.open=true};dom.window.HTMLDialogElement.prototype.close=function(){this.open=false};
+globalThis.fetch=async url=>{if(String(url)==='/health')return {ok:false};return {ok:true,json:async()=>JSON.parse(fs.readFileSync(new URL('../dist/data/'+String(url).split('/').pop(),import.meta.url),'utf8'))}};
+const $=id=>document.getElementById(id),options=id=>[...$(id).options].map(o=>o.value);async function until(fn){for(let i=0;i<100;i++){if(fn())return;await new Promise(r=>setTimeout(r,20));}throw Error('UI timeout')}
+await import('../dist/app.js');await until(()=>$('yield-value').textContent!=='—');
+assert.deepEqual(options('year'),Array.from({length:21},(_,i)=>String(2000+i)));assert.equal($('year').value,'2020');assert.deepEqual(options('source'),['history','upload']);
+assert.equal($('source-control').hidden,false);assert.equal($('gee-source-label').hidden,true);
+$('year-trigger').click();assert.equal($('year-list').hidden,false);assert.equal($('year-trigger').getAttribute('aria-expanded'),'true');
+$('year-trigger').dispatchEvent(new dom.window.KeyboardEvent('keydown',{key:'Home',bubbles:true}));$('year-trigger').dispatchEvent(new dom.window.KeyboardEvent('keydown',{key:'Enter',bubbles:true}));assert.equal($('year').value,'2000');assert.equal($('year-value').textContent,'2000');assert.equal($('year-list').hidden,true);
+$('source-trigger').click();$('source-option-1').click();assert.equal($('source').value,'upload');assert.equal($('upload-controls').hidden,false);
+$('province-trigger').click();document.body.click();assert.equal($('province-list').hidden,true);
+$('sidebar-toggle').click();assert.equal(document.body.classList.contains('sidebar-collapsed'),true);assert.equal($('sidebar-toggle').getAttribute('aria-expanded'),'false');$('sidebar-toggle').click();assert.equal($('sidebar-toggle').getAttribute('aria-expanded'),'true');
+$('mode-new').click();const current=+new Intl.DateTimeFormat('en',{timeZone:'Asia/Ho_Chi_Minh',year:'numeric'}).format(new Date());assert.deepEqual(options('year'),Array.from({length:current-2020},(_,i)=>String(i+2021)));assert.equal($('year').value,String(current));assert.deepEqual(options('source'),['gee']);assert.equal($('source-control').hidden,true);assert.equal($('gee-source-label').hidden,false);assert.equal($('gee-source-label').textContent,'Google Earth Engine - qua API');assert.equal($('upload-controls').hidden,true);
+$('mode-history').click();assert.equal($('year').value,'2020');assert.deepEqual(options('source'),['history','upload']);assert.equal($('gee-controls').hidden,true);
+$('year-trigger').click();$('year-trigger').dispatchEvent(new dom.window.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));assert.equal($('year-list').hidden,true);
+assert.match(document.querySelector('.page-heading p').textContent,/Ứng dụng vẫn lấy các tỉnh thành cũ làm ranh giới/);assert.ok(!document.querySelector('#models-view .page-heading p').textContent.includes('Chọn theo'));assert.equal($('close-data').querySelectorAll('svg').length,1);
+console.log('PASS: exact year ranges, mode-specific sources, static GEE label, dropdown selection and keyboard/outside closing, logo collapse/expand, new copy and centered close icon.');

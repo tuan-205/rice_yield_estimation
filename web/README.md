@@ -6,10 +6,10 @@ Giao diện tiếng Việt chạy mô hình Bayesian Ridge đã chọn trong not
 
 ## Có thể dùng ngay
 
-- Chọn tỉnh/năm/vụ lịch sử 2000–2022; so sánh dự đoán với nhãn năng suất thực.
+- Chọn tỉnh/năm/vụ lịch sử 2000–2020; so sánh dự đoán với nhãn năng suất thực.
 - Xem 19 đặc trưng, chất lượng vệ tinh, biểu đồ lịch sử và bảng so sánh 13 mô hình.
-- Nhập CSV đặc trưng theo vụ (19 cột như CSV huấn luyện), hoặc CSV dữ liệu tháng xuất từ GEE. Tải kết quả CSV.
-- Chọn năm 2026: yêu cầu dữ liệu thực của vụ; chặn cửa sổ chưa kết thúc, dữ liệu khí hậu thiếu và tháng trùng. Không tự lấy số liệu 2022 để giả làm 2026.
+- Ở chế độ lịch sử: nhập CSV đặc trưng theo vụ (19 cột như CSV huấn luyện), hoặc CSV dữ liệu tháng cho 2000–2020. Tải kết quả CSV.
+- Chế độ Vụ mới chỉ có các năm 2021 đến năm hiện tại, nguồn GEE qua API được cố định. Chọn năm 2026: yêu cầu dữ liệu thực của vụ; chặn cửa sổ chưa kết thúc, dữ liệu khí hậu thiếu và tháng trùng. Không tự lấy số liệu 2022 để giả làm 2026.
 - API GEE là kết nối tùy chọn, cần máy chủ có xác thực Google. Chỉ nhập ID không tạo quyền truy cập.
 
 ## Chạy web tại máy
@@ -41,15 +41,14 @@ Nếu file hợp lệ nhưng vẫn bị từ chối, cấp quyền đọc asset 
 
 Nếu dùng khóa trên máy chủ riêng, đặt biến `GOOGLE_APPLICATION_CREDENTIALS` bằng đường dẫn file khóa đã mount ở máy chủ. Backend cũng phục vụ web tại `/`, tự kết nối cùng origin. Trên Cloud Run vẫn có thể dùng service account gắn với runtime thay cho file khóa.
 
-## Thử vụ 2026 bằng CSV GEE (không cần dựng API)
+## Hai chế độ dữ liệu
 
-1. Mở https://code.earthengine.google.com/ và chọn Cloud Project `du-lieu-ve-tinh-vietnam` đã đăng ký Earth Engine.
-2. Dán nội dung `web/gee/export_season_monthly.js` vào Code Editor.
-3. Sửa `YIELD_YEAR`, `SEASON`, `PROVINCE_CODE` ở đầu script. Mặc định là đông xuân 2026, An Giang (3326).
-4. Giữ `RICE_ASSET = projects/du-lieu-ve-tinh-vietnam/assets/rice_map_vietnam_2020` đúng nguồn mô hình. Run, mở Tasks và chạy task xuất CSV vào Drive.
-5. Tải CSV. Trên web chọn Vụ mới → tỉnh/năm/vụ tương ứng → CSV do bạn cung cấp → tải tệp lên → Ước lượng.
+- **Kiểm nghiệm lịch sử:** năm 2000–2020, chọn bộ dữ liệu lịch sử hoặc CSV do người dùng cung cấp.
+- **Vụ mới:** năm 2021 đến năm hiện tại (theo múi giờ Việt Nam), nguồn cố định Google Earth Engine - qua API, không có menu chọn nguồn và không nhập CSV trong chế độ này. Có thể chạy bản cục bộ bằng file JSON như hướng dẫn trên để tự kết nối backend.
 
-Chỉ chạy cho vụ đã hoàn tất. Đông xuân 2026 cần tháng 11/2025–4/2026; hè thu–thu đông 2026 cần tháng 4–11/2026. Tháng 11 chưa kết thúc thì chưa có đủ dữ liệu cả vụ.
+Mã `web/gee/export_season_monthly.js` vẫn có thể dùng xuất dữ liệu GEE để đối chiếu ngoài ứng dụng. Chỉ ước lượng sau khi đủ toàn bộ cửa sổ vụ. Đông xuân 2026 cần tháng 11/2025–4/2026; hè thu–thu đông 2026 cần tháng 4–11/2026.
+
+Bấm logo Lúa Lab để thu gọn hoặc mở rộng thanh điều hướng. Các menu chọn hỗ trợ bàn phím mũi tên, Home/End, Enter và Escape.
 
 ## Bật lấy dữ liệu trực tiếp từ GEE
 
@@ -94,6 +93,7 @@ npm ci
 npm test
 node tests/ui.test.mjs
 node tests/local-ui.test.mjs
+node tests/interface.test.mjs
 # Từ gốc repository, sau khi cài httpx:
 python -m unittest web.tests.test_api -v
 ```
