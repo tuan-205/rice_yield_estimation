@@ -1,5 +1,5 @@
 {
-  "experiment": "11_fixed_base_models_top4_ridge_stacking_and_catboost",
+  "experiment": "5_fixed_ensemble_base_models_top4_ridge_stacking_and_catboost",
   "target": "nang_suat_t_ha",
   "target_unit": "tonne_per_hectare",
   "feature_names": [
@@ -57,25 +57,14 @@
     "add_missing_indicator": true,
     "keep_empty_features": true,
     "one_hot_unknown": "ignore",
-    "scale_numeric_for": [
-      "BayesianRidge",
-      "SVR",
-      "Ridge",
-      "ElasticNet"
-    ]
+    "scale_numeric_for": []
   },
   "model_order": [
     "RandomForest",
     "ExtraTrees",
     "XGBoost",
-    "DecisionTree",
-    "BayesianRidge",
     "GradientBoosting",
     "HistGradientBoosting",
-    "SVR",
-    "Ridge",
-    "ElasticNet",
-    "Dummy",
     "StackingTop4Ridge",
     "CatBoost"
   ],
@@ -83,14 +72,8 @@
     "RandomForest",
     "ExtraTrees",
     "XGBoost",
-    "DecisionTree",
-    "BayesianRidge",
     "GradientBoosting",
-    "HistGradientBoosting",
-    "SVR",
-    "Ridge",
-    "ElasticNet",
-    "Dummy"
+    "HistGradientBoosting"
   ],
   "model_parameters": {
     "RandomForest": {
@@ -175,34 +158,6 @@
       "validate_parameters": null,
       "verbosity": 0
     },
-    "DecisionTree": {
-      "ccp_alpha": 0.0,
-      "criterion": "squared_error",
-      "max_depth": null,
-      "max_features": null,
-      "max_leaf_nodes": null,
-      "min_impurity_decrease": 0.0,
-      "min_samples_leaf": 1,
-      "min_samples_split": 2,
-      "min_weight_fraction_leaf": 0.0,
-      "monotonic_cst": null,
-      "random_state": 42,
-      "splitter": "best"
-    },
-    "BayesianRidge": {
-      "alpha_1": 1e-06,
-      "alpha_2": 1e-06,
-      "alpha_init": null,
-      "compute_score": false,
-      "copy_X": true,
-      "fit_intercept": true,
-      "lambda_1": 1e-06,
-      "lambda_2": 1e-06,
-      "lambda_init": null,
-      "max_iter": 300,
-      "tol": 0.001,
-      "verbose": false
-    },
     "GradientBoosting": {
       "alpha": 0.9,
       "ccp_alpha": 0.0,
@@ -249,47 +204,6 @@
       "verbose": 0,
       "warm_start": false
     },
-    "SVR": {
-      "C": 1.0,
-      "cache_size": 200,
-      "coef0": 0.0,
-      "degree": 3,
-      "epsilon": 0.1,
-      "gamma": "scale",
-      "kernel": "rbf",
-      "max_iter": -1,
-      "shrinking": true,
-      "tol": 0.001,
-      "verbose": false
-    },
-    "Ridge": {
-      "alpha": 1.0,
-      "copy_X": true,
-      "fit_intercept": true,
-      "max_iter": null,
-      "positive": false,
-      "random_state": null,
-      "solver": "auto",
-      "tol": 0.0001
-    },
-    "ElasticNet": {
-      "alpha": 1.0,
-      "copy_X": true,
-      "fit_intercept": true,
-      "l1_ratio": 0.5,
-      "max_iter": 10000,
-      "positive": false,
-      "precompute": false,
-      "random_state": 42,
-      "selection": "cyclic",
-      "tol": 0.0001,
-      "warm_start": false
-    },
-    "Dummy": {
-      "constant": null,
-      "quantile": null,
-      "strategy": "mean"
-    },
     "CatBoost": {
       "iterations": 500,
       "learning_rate": 0.05,
@@ -317,7 +231,7 @@
     "XGBoost"
   ],
   "best_base_on_validation": "GradientBoosting",
-  "top4_selection": "11_base_validation_MAE_then_RMSE_then_name; excludes_separate_CatBoost",
+  "top4_selection": "5_ensemble_base_validation_MAE_then_RMSE_then_name; excludes_separate_CatBoost",
   "meta_learner": {
     "type": "StandardScaler_then_Ridge",
     "alpha": 10.0,
@@ -355,7 +269,7 @@
   "stacking_validation_score_reason": "2016-2018 labels used to select bases and fit meta learner",
   "test_used_for_fitting_or_top4_selection": false,
   "test_used_for_model_selection": true,
-  "saved_model": "BayesianRidge",
+  "saved_model": "CatBoost",
   "saved_model_kind": "single",
   "saved_model_selection_rule": "top3_appearances_desc_then_MAE_asc_RMSE_asc_R2_desc_name",
   "selection_top_k_per_metric": 3,
@@ -367,26 +281,26 @@
   "selected_model_top3_appearances": 3,
   "top3_models_per_metric": {
     "MAE_t_ha": [
-      "BayesianRidge",
-      "Ridge",
-      "SVR"
+      "CatBoost",
+      "ExtraTrees",
+      "GradientBoosting"
     ],
     "RMSE_t_ha": [
-      "Ridge",
-      "BayesianRidge",
-      "CatBoost"
+      "CatBoost",
+      "GradientBoosting",
+      "RandomForest"
     ],
     "R2": [
-      "Ridge",
-      "BayesianRidge",
-      "CatBoost"
+      "CatBoost",
+      "GradientBoosting",
+      "RandomForest"
     ]
   },
   "metric_vote_caveat": "RMSE and R2 rankings coincide on identical labels and rows; MAE breaks vote ties.",
   "saved_model_metrics": {
-    "MAE_t_ha": 0.35946352367261153,
-    "RMSE_t_ha": 0.6963912440284571,
-    "R2": 0.6330949712249029
+    "MAE_t_ha": 0.4409734263806823,
+    "RMSE_t_ha": 0.7024982227256281,
+    "R2": 0.6266316332617698
   },
   "saved_model_metrics_are_independent_after_selection": false,
   "random_state": 42,
@@ -429,15 +343,15 @@
       "rows": 104,
       "MAE_t_ha": 0.5472140216541995,
       "RMSE_t_ha": 0.7831071441501717,
-      "R2": 0.5360304999610251
+      "R2": 0.5360304999610253
     },
     {
       "model": "ExtraTrees",
       "split": "test_2019_2022",
       "rows": 104,
-      "MAE_t_ha": 0.5053565787394921,
-      "RMSE_t_ha": 0.812980971436704,
-      "R2": 0.4999564593373004
+      "MAE_t_ha": 0.505356578739492,
+      "RMSE_t_ha": 0.8129809714367039,
+      "R2": 0.4999564593373006
     },
     {
       "model": "XGBoost",
@@ -446,22 +360,6 @@
       "MAE_t_ha": 0.5650071344457596,
       "RMSE_t_ha": 0.8329235693299083,
       "R2": 0.4751232164500271
-    },
-    {
-      "model": "DecisionTree",
-      "split": "test_2019_2022",
-      "rows": 104,
-      "MAE_t_ha": 0.6491123463927857,
-      "RMSE_t_ha": 0.9675271197268664,
-      "R2": 0.29177157303395473
-    },
-    {
-      "model": "BayesianRidge",
-      "split": "test_2019_2022",
-      "rows": 104,
-      "MAE_t_ha": 0.35946352367261153,
-      "RMSE_t_ha": 0.6963912440284571,
-      "R2": 0.6330949712249029
     },
     {
       "model": "GradientBoosting",
@@ -480,42 +378,10 @@
       "R2": 0.5352046414207345
     },
     {
-      "model": "SVR",
-      "split": "test_2019_2022",
-      "rows": 104,
-      "MAE_t_ha": 0.4366848181946932,
-      "RMSE_t_ha": 0.7478745482178011,
-      "R2": 0.5768400400867892
-    },
-    {
-      "model": "Ridge",
-      "split": "test_2019_2022",
-      "rows": 104,
-      "MAE_t_ha": 0.3601902806988457,
-      "RMSE_t_ha": 0.6934866760817183,
-      "R2": 0.6361492259639887
-    },
-    {
-      "model": "ElasticNet",
-      "split": "test_2019_2022",
-      "rows": 104,
-      "MAE_t_ha": 1.0428656975450303,
-      "RMSE_t_ha": 1.3048387143735396,
-      "R2": -0.28813306329938615
-    },
-    {
-      "model": "Dummy",
-      "split": "test_2019_2022",
-      "rows": 104,
-      "MAE_t_ha": 1.0715162140590697,
-      "RMSE_t_ha": 1.3604002575707503,
-      "R2": -0.4001690426684035
-    },
-    {
       "model": "StackingTop4Ridge",
       "split": "test_2019_2022",
       "rows": 104,
-      "MAE_t_ha": 0.6129891635062568,
+      "MAE_t_ha": 0.6129891635062565,
       "RMSE_t_ha": 0.8436509062556065,
       "R2": 0.46151623378049544
     },

@@ -1,8 +1,9 @@
+import {mockPrediction} from './prediction-fixture.mjs';
 import fs from 'node:fs';import assert from 'node:assert/strict';import {JSDOM} from 'jsdom';
 const dom=new JSDOM(fs.readFileSync(new URL('../dist/index.html',import.meta.url),'utf8'),{url:'http://127.0.0.1:8080/'});
 globalThis.window=dom.window;globalThis.document=dom.window.document;globalThis.URL=dom.window.URL;
 dom.window.HTMLDialogElement.prototype.showModal=function(){this.open=true};dom.window.HTMLDialogElement.prototype.close=function(){this.open=false};
-let monthlyURL='';globalThis.fetch=async url=>{
+let monthlyURL='';globalThis.fetch=async (url,options)=>{if(String(url).endsWith('/v1/predict'))return mockPrediction(options);
  if(String(url)==='/health')return {ok:true,json:async()=>({service:'lua-lab-gee-api',gee_configured:true})};
  if(String(url).endsWith('/v1/monthly')){monthlyURL=String(url);return {ok:false,json:async()=>({detail:'Test server: GEE permission not granted'})};}
  return {ok:true,json:async()=>JSON.parse(fs.readFileSync(new URL('../dist/data/'+String(url).split('/').pop(),import.meta.url),'utf8'))};};

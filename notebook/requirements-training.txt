@@ -1,12 +1,13 @@
-# Python 3.10-3.12; chọn kernel dùng cùng môi trường cài thư viện.
-# xgboost-cpu cung cấp module xgboost, không cần CUDA (Linux x86_64).
-xgboost-cpu==3.0.5
+# Python 3.11–3.12 (khuyến nghị 3.12); cùng phiên bản với artifact đã lưu.
+# CPU: Linux x86_64 dùng bản nhẹ; Windows/macOS/ARM dùng gói đa nền tảng.
+xgboost-cpu==3.0.5; sys_platform == "linux" and platform_machine == "x86_64"
+xgboost==3.0.5; sys_platform != "linux" or platform_machine != "x86_64"
 catboost==1.2.8
-numpy>=1.26,<3
-pandas>=2.1,<3
-matplotlib>=3.9,<4
-scikit-learn>=1.4,<2
-joblib>=1.3,<2
-ipykernel>=6.29,<8
-nbformat>=5.10,<6
-nbclient>=0.10,<1
+numpy==2.3.5
+pandas==2.2.3
+matplotlib==3.10.8
+scikit-learn==1.8.0
+joblib==1.5.3
+ipykernel==7.4.0
+nbformat==5.11.1
+nbclient==0.11.0

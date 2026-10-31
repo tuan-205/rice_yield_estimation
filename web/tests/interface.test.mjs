@@ -1,8 +1,9 @@
+import {mockPrediction} from './prediction-fixture.mjs';
 import fs from 'node:fs';import assert from 'node:assert/strict';import {JSDOM} from 'jsdom';
 const dom=new JSDOM(fs.readFileSync(new URL('../dist/index.html',import.meta.url),'utf8'),{url:'https://test.example/'});
 globalThis.window=dom.window;globalThis.document=dom.window.document;globalThis.URL=dom.window.URL;globalThis.Event=dom.window.Event;
 dom.window.HTMLDialogElement.prototype.showModal=function(){this.open=true};dom.window.HTMLDialogElement.prototype.close=function(){this.open=false};
-globalThis.fetch=async url=>{if(String(url)==='/health')return {ok:false};return {ok:true,json:async()=>JSON.parse(fs.readFileSync(new URL('../dist/data/'+String(url).split('/').pop(),import.meta.url),'utf8'))}};
+globalThis.fetch=async (url,options)=>{if(String(url).endsWith('/v1/predict'))return mockPrediction(options);if(String(url)==='/health')return {ok:false};return {ok:true,json:async()=>JSON.parse(fs.readFileSync(new URL('../dist/data/'+String(url).split('/').pop(),import.meta.url),'utf8'))}};
 const $=id=>document.getElementById(id),options=id=>[...$(id).options].map(o=>o.value);async function until(fn){for(let i=0;i<100;i++){if(fn())return;await new Promise(r=>setTimeout(r,20));}throw Error('UI timeout')}
 await import('../dist/app.js');await until(()=>$('yield-value').textContent!=='—');
 assert.deepEqual(options('year'),Array.from({length:21},(_,i)=>String(2000+i)));assert.equal($('year').value,'2020');assert.deepEqual(options('source'),['history','upload']);

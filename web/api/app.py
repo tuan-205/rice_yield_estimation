@@ -46,5 +46,18 @@ def monthly(request:SeasonRequest):
         _cache[key]=(time.monotonic(),response)
         return response
 
+class PredictionRequest(BaseModel):
+    rows:list[dict]=Field(min_length=1,max_length=1000)
+
+@app.post('/v1/predict')
+def predict(request:PredictionRequest):
+    from .model_service import predict_rows
+    try:
+        return predict_rows(request.rows)
+    except FileNotFoundError:
+        raise HTTPException(503,'Chưa có mô hình đã lưu. Chạy notebook huấn luyện trước.')
+    except (ValueError, TypeError) as error:
+        raise HTTPException(422,str(error))
+
 # Only serve built web assets. Credential files and backend source are never exposed.
 app.mount("/", StaticFiles(directory=Path(__file__).resolve().parents[1] / "dist", html=True, check_dir=False), name="frontend")

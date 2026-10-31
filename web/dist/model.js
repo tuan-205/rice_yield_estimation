@@ -26,6 +26,17 @@ export function predict(model,row){
  if(!Number.isFinite(value))throw Error('Không tính được kết quả từ dữ liệu đầu vào.');
  return value;
 }
+export async function predictRows(model,rows){
+ if(model.engine!=='python')return rows.map(row=>predict(model,row));
+ let response;
+ try{response=await fetch('/v1/predict',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({rows}),signal:AbortSignal.timeout(30000)});}
+ catch{throw Error('Không kết nối được mô hình. Hãy chạy python -m web.run_local và mở http://127.0.0.1:8080.');}
+ if(!response.ok){const body=await response.json().catch(()=>({}));throw Error(typeof body.detail==='string'?body.detail:'Không chạy được mô hình. Hãy mở web qua python -m web.run_local.');}
+ const result=await response.json();
+ if(result.artifact_sha256!==model.artifact_sha256||result.model!==model.name)throw Error('Phiên bản mô hình và giao diện không khớp. Hãy xuất lại bundle web và tải lại trang.');
+ if(result.predictions.length!==rows.length||result.predictions.some(v=>!Number.isFinite(v)))throw Error('Dự đoán từ máy chủ không hợp lệ.');
+ return result.predictions;
+}
 const number=v=>v==null||String(v).trim()===''?null:(Number.isFinite(Number(v))?Number(v):null);
 const mean=a=>a.length?a.reduce((s,x)=>s+x,0)/a.length:null;
 const min=a=>a.length?Math.min(...a):null,max=a=>a.length?Math.max(...a):null;

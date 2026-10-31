@@ -1,4 +1,4 @@
-"""Export the selected fitted Bayesian Ridge pipeline to a deterministic browser representation."""
+"""Export selected-model metadata and data for the Python inference backend."""
 from pathlib import Path
 import hashlib,json,sys
 import joblib,numpy as np,pandas as pd
@@ -7,9 +7,6 @@ OUT=Path(sys.argv[1]) if len(sys.argv)>1 else ROOT/'web'/'dist'/'data'
 OUT.mkdir(parents=True,exist_ok=True)
 artifact=joblib.load(ROOT/'models/model_comparison/rice_best_model.joblib')
 meta=json.loads((ROOT/'models/model_comparison/rice_best_model_metadata.json').read_text())
-if artifact['kind']!='single' or artifact['model_name']!='BayesianRidge':
-    raise RuntimeError('Browser export supports only the verified BayesianRidge pipeline. Re-export and validate when the selected model changes.')
-pipe=artifact['model']; prep=pipe.named_steps['preprocessor']; num=prep.named_transformers_['numeric']; imp=num.named_steps['imputer']; scale=num.named_steps['scaler']; cat=prep.named_transformers_['categorical']; reg=pipe.named_steps['regressor']
 df=pd.read_csv(ROOT/'data/processed/rice_ml_features_2000_2022.csv')
 # JSON cannot represent NaN; preserve missing values as null for browser imputation.
 def clean(v):
@@ -19,9 +16,7 @@ def clean(v):
     if isinstance(v,(float,np.floating)):return float(v) if np.isfinite(v) else None
     return v
 model=clean({'name':artifact['model_name'],'feature_names':artifact['feature_names'],'schema':artifact['preprocessing'],
-    'imputer':{'statistics':imp.statistics_,'indicator_features':imp.indicator_.features_},
-    'scaler':{'mean':scale.mean_,'scale':scale.scale_},'categories':cat.categories_,
-    'regressor':{'coef':reg.coef_,'intercept':reg.intercept_},'training_years':meta['final_fit_period'],
+    'engine':'python', 'training_years':meta['final_fit_period'],
     'evaluation_years':meta['test_period'],'evaluation_metrics':meta['saved_model_metrics'],
     'selection_rule':meta['saved_model_selection_rule'],'votes':meta['selected_model_top3_appearances'],
     'vci_baseline':[2000,2015],'rice_mask_year':2020,
@@ -34,8 +29,8 @@ provinces=df[['adm1_code','tinh_thanh']].drop_duplicates().sort_values('tinh_tha
 metrics=pd.read_csv(ROOT/'reports/model_comparison/rice_model_ranking.csv')
 (OUT/'comparison.json').write_text(json.dumps(clean(metrics.to_dict('records')),ensure_ascii=False),encoding='utf-8')
 # Reference predictions from original Python pipeline for every row, never used as browser prediction output.
-x=df[artifact['feature_names']].copy()
-for col in artifact['preprocessing']['categorical_features']:x[col]=x[col].astype(str)
-reference=clean({'predictions':pipe.predict(x).tolist()})
+sys.path.insert(0,str(ROOT))
+from web.api.model_service import predict_rows
+reference=clean(predict_rows(clean(df.to_dict('records'))))
 (OUT/'reference.json').write_text(json.dumps(reference),encoding='utf-8')
 print('Exported model, 579 observations, provinces, ranking and Python parity reference to',OUT)

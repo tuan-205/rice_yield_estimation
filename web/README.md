@@ -2,12 +2,12 @@
 
 Bản chạy riêng tư: https://mekong-rice-yield-lab.elatedboar4096.chatgpt.site
 
-Giao diện tiếng Việt chạy mô hình Bayesian Ridge đã chọn trong notebook, theo 13 tỉnh GAUL 2015 và hai nhóm vụ. Mô hình web được xuất từ pipeline đã fit, không huấn luyện một mô hình khác và không dùng số dự đoán định sẵn.
+Giao diện tiếng Việt dùng backend Python chạy mô hình đã chọn trong notebook (hiện tại là CatBoost), theo 13 tỉnh GAUL 2015 và hai nhóm vụ. Mô hình web được xuất từ pipeline đã fit, không huấn luyện một mô hình khác và không dùng số dự đoán định sẵn.
 
 ## Có thể dùng ngay
 
 - Chọn tỉnh/năm/vụ lịch sử 2000–2020; so sánh dự đoán với nhãn năng suất thực.
-- Xem 19 đặc trưng, chất lượng vệ tinh, biểu đồ lịch sử và bảng so sánh 13 mô hình.
+- Xem 19 đặc trưng, chất lượng vệ tinh, biểu đồ lịch sử và bảng so sánh 7 mô hình.
 - Ở chế độ lịch sử: nhập CSV đặc trưng theo vụ (19 cột như CSV huấn luyện), hoặc CSV dữ liệu tháng cho 2000–2020. Tải kết quả CSV.
 - Chế độ Vụ mới chỉ có các năm 2021 đến năm hiện tại, nguồn GEE qua API được cố định. Chọn năm 2026: yêu cầu dữ liệu thực của vụ; chặn cửa sổ chưa kết thúc, dữ liệu khí hậu thiếu và tháng trùng. Không tự lấy số liệu 2022 để giả làm 2026.
 - API GEE là kết nối tùy chọn, cần máy chủ có xác thực Google. Chỉ nhập ID không tạo quyền truy cập.
@@ -17,10 +17,11 @@ Giao diện tiếng Việt chạy mô hình Bayesian Ridge đã chọn trong not
 Từ gốc repository:
 
 ```sh
-python -m http.server 8080 --directory web/dist
+python -m pip install -r requirements.txt
+python -m web.run_local
 ```
 
-Mở `http://localhost:8080`. Chế độ lịch sử và CSV không cần khóa API hoặc backend.
+Mở `http://localhost:8080`. Chế độ lịch sử và CSV không cần khóa GEE. Backend cùng máy chủ nạp mô hình đã lưu; cần chạy bằng lệnh trên thay cho máy chủ file tĩnh.
 
 ## Dùng file JSON xác thực — không nhập API URL
 
@@ -88,6 +89,8 @@ Tài liệu: https://developers.google.com/earth-engine/guides/auth và https://
 ```sh
 # Sau khi notebook chọn mô hình mới, xuất lại bundle web:
 python web/tools/export_browser_model.py
+
+# Backend phải đang chạy; đặt PREDICTION_API=http://127.0.0.1:8080 theo README gốc.
 cd web
 npm ci
 npm test
@@ -95,12 +98,12 @@ node tests/ui.test.mjs
 node tests/local-ui.test.mjs
 node tests/interface.test.mjs
 # Từ gốc repository, sau khi cài httpx:
-python -m unittest web.tests.test_api -v
+python -m unittest web.tests.test_api web.tests.test_model_service -v
 ```
 
-Exporter chủ động từ chối mô hình khác Bayesian Ridge. Nếu notebook chọn thuật toán khác, cần bổ sung bộ chạy tương ứng hoặc chuyển suy luận sang backend, rồi kiểm tra lại tính tương đương.
+Exporter xuất metadata và dữ liệu cho web; backend nạp trực tiếp `models/model_comparison/rice_best_model.joblib`. Hỗ trợ mô hình đơn và stacking theo schema artifact của notebook. Sau huấn luyện, chạy exporter, khởi động lại backend rồi tải lại trang. `POST /v1/predict` nhận `{"rows":[{...19 đặc trưng...}]}` và trả dự đoán, tên mô hình, SHA-256 để giao diện kiểm tra phiên bản.
 
-Đã kiểm tra 579 dự đoán khớp Python với sai số tối đa khoảng 3.6e-15; dữ liệu tháng gốc tái tạo toàn bộ 579 dòng đặc trưng; kiểm tra luồng DOM, API với nguồn giả lập, CSV và cửa sổ quan sát. Chưa xác minh giao dịch GEE thực vì runtime này chưa có danh tính Google được cấp quyền; chưa có QA trình duyệt thật trong môi trường hiện tại.
+Kiểm tra 579 dự đoán qua API so với Python và 104 dự đoán Test so với báo cáo notebook; dữ liệu tháng gốc tái tạo toàn bộ 579 dòng đặc trưng; kiểm tra luồng DOM, API với nguồn giả lập, CSV và cửa sổ quan sát. Chưa xác minh giao dịch GEE thực vì runtime này chưa có danh tính Google được cấp quyền; chưa có QA trình duyệt thật trong môi trường hiện tại.
 
 ## Phạm vi kết quả
 

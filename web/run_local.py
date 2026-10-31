@@ -14,14 +14,15 @@ def configure(args):
 
 def main(argv=None):
     parser=argparse.ArgumentParser(description='Chạy Lúa Lab bằng file JSON xác thực GEE; không cần nhập API URL.')
-    parser.add_argument('--credentials',required=True,help='Đường dẫn file JSON trên máy; không tải file lên web.')
+    parser.add_argument('--credentials',help='Đường dẫn file JSON trên máy; chỉ cần khi dùng GEE.')
     parser.add_argument('--project',default='du-lieu-ve-tinh-vietnam')
     parser.add_argument('--asset',default='projects/du-lieu-ve-tinh-vietnam/assets/rice_map_vietnam_2020')
     parser.add_argument('--port',type=int,default=8080)
     parser.add_argument('--check-gee',action='store_true',help='Kiểm tra xác thực và quyền đọc asset trước khi chạy web.')
     args=parser.parse_args(argv)
     if not 1<=args.port<=65535:parser.error('Port phải nằm trong 1–65535.')
-    try:configure(args)
+    try:
+        if args.credentials:configure(args)
     except ValueError as e:parser.error(str(e))
     if args.check_gee:
         try:
@@ -34,7 +35,7 @@ def main(argv=None):
             # Never print credential content or raw SDK error messages.
             parser.exit(1,f'Chưa xác thực hoặc đọc được asset ({type(e).__name__}). Kiểm tra file khóa, quyền service account và project Earth Engine.\n')
         print('Đã xác thực GEE và kiểm tra quyền đọc asset thành công.')
-    print(f'Mở web tại http://127.0.0.1:{args.port}; giao diện tự kết nối GEE qua cùng máy chủ.')
+    print(f'Mở web tại http://127.0.0.1:{args.port}; mô hình đã lưu phục vụ qua backend cùng máy chủ.')
     import uvicorn
     uvicorn.run('web.api.app:app',host='127.0.0.1',port=args.port)
 if __name__=='__main__':main()
