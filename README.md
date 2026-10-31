@@ -14,7 +14,7 @@ Windows PowerShell: `.venv\Scripts\Activate.ps1` (nếu máy chặn kích hoạt
 ```sh
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
-python -m web.run_local
+python -m web.run_local --credentials "duong-dan-file-json-khoa-xac-thuc" --check-gee
 ```
 
 Mở **http://127.0.0.1:8080**. Lịch sử và CSV dùng mô hình ở backend, không cần tài khoản GEE. Chế độ Vụ mới cần cấu hình GEE theo [hướng dẫn web](web/README.md). Các phiên bản thư viện mô hình được ghim để nạp đúng artifact đã lưu; XGBoost có lựa chọn gói theo hệ điều hành.
