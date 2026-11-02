@@ -27,11 +27,14 @@ python notebook/train.py
 
 Lệnh chạy toàn bộ notebook bằng chính Python trong môi trường hiện tại; nếu lỗi sẽ dừng. Khi thành công, notebook giữ output và xuất dữ liệu web. Có thể chạy tương tác bằng VS Code/Jupyter, chọn kernel của `.venv`, Restart Kernel → Run All, sau đó chạy `python web/tools/export_browser_model.py`.
 
-- 5 base ensemble được huấn luyện, chọn 4 bằng Validation rồi tạo stacking; CatBoost là đối chứng riêng.
+- Tìm siêu tham số cho Random Forest, Extra Trees, XGBoost, Gradient Boosting, Hist Gradient Boosting và CatBoost: mỗi mô hình có cấu hình hiện tại + tối đa 12 cấu hình ngẫu nhiên, 3 fold tiến theo năm 2016/2017/2018 (tối đa 234 lần fit tìm kiếm). Chọn theo MAE gộp → RMSE → mã cấu hình, seed=42; không dùng Test để tinh chỉnh.
+- So sánh trước/sau trên cùng Train 2000–2015 / Validation 2016–2018. Chọn 4 trong 5 base đã tối ưu bằng Validation rồi tạo stacking; CatBoost đã tối ưu là đối chứng riêng. Validation được tái sử dụng cho tìm tham số, chọn base và học Ridge nên không phải kiểm định độc lập hoặc nested OOF.
+- `reports/model_comparison/rice_tuning_{trials,folds,summary,before_after}.csv` lưu ứng viên, điểm theo năm, tham số thắng, thời gian và chênh lệch trước/sau; metadata mô hình ghi ngân sách và cấu hình được chọn.
 - Quy tắc chọn mô hình lưu: số lần xuất hiện trong top 3 MAE/RMSE/R² cao nhất; hòa phiếu ưu tiên MAE, RMSE, R² rồi tên. Test đã dùng chọn mô hình, nên cần dữ liệu mới để đánh giá độc lập.
 - `models/model_comparison/rice_best_model.joblib` chứa đúng mô hình thắng và tiền xử lý cần thiết (nếu stacking thắng, chứa 4 base cùng meta learner).
 - `rice_best_model_metadata.json` cùng thư mục lưu schema, tham số, phiên bản và chỉ số; `reports/model_comparison/` lưu bảng so sánh và biểu đồ.
-- Phiên bản hiện tại chọn **CatBoost**. Web nạp trực tiếp artifact này qua `POST /v1/predict`; không huấn luyện lại trong request. Sau huấn luyện/xuất bundle, khởi động lại backend và tải lại trang để nạp phiên bản mới.
+- Phiên bản sau tìm siêu tham số chọn **CatBoost**: 300 cây, depth=3, learning_rate=0.03, l2_leaf_reg=10 và random_strength=0.5. Trên Test 2019–2022: MAE **0.4160 tấn/ha**, RMSE **0.7063 tấn/ha**, R² **0.6226**. So với CatBoost cấu hình cố định trước đó, MAE giảm từ 0.4410; RMSE tăng từ 0.7025 và R² giảm từ 0.6266, nên không coi mọi chỉ số đều cải thiện.
+- Web nạp trực tiếp artifact được chọn qua `POST /v1/predict`; không huấn luyện lại trong request. Sau huấn luyện/xuất bundle, khởi động lại backend và tải lại trang để nạp phiên bản mới.
 
 Chỉ nạp file joblib từ repository/nguồn bạn tin cậy. Không commit `.venv` hoặc file khóa GEE.
 

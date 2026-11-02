@@ -1,5 +1,105 @@
 {
-  "experiment": "5_fixed_ensemble_base_models_top4_ridge_stacking_and_catboost",
+  "experiment": "6_tuned_ensemble_models_with_baseline_comparison_and_top4_ridge_stacking",
+  "hyperparameter_search": {
+    "method": "seeded_ParameterSampler_plus_current_baseline",
+    "random_candidates_per_model": 12,
+    "fold_years": [
+      2016,
+      2017,
+      2018
+    ],
+    "fold_policy": "fit_all_years_before_validation_year; no_test_rows",
+    "selection_rule": "pooled_OOF_MAE_then_RMSE_then_candidate_id; baseline_id_0",
+    "max_search_fits": 234,
+    "actual_search_fits": 234,
+    "summary": [
+      {
+        "model": "RandomForest",
+        "best_candidate_id": 6,
+        "kept_baseline": false,
+        "candidate_count": 13,
+        "cv_fits": 39,
+        "baseline_CV_MAE_t_ha": 0.5046451726097029,
+        "selected_CV_MAE_t_ha": 0.48825529831540176,
+        "CV_MAE_reduction_t_ha": 0.01638987429430111,
+        "selected_CV_RMSE_t_ha": 0.9286182116826068,
+        "selected_CV_R2": 0.35071589696195893,
+        "search_seconds": 25.354765917999885,
+        "selected_parameters": "{\"bootstrap\": true, \"ccp_alpha\": 0.0, \"criterion\": \"squared_error\", \"max_depth\": null, \"max_features\": 0.7, \"max_leaf_nodes\": null, \"max_samples\": null, \"min_impurity_decrease\": 0.0, \"min_samples_leaf\": 1, \"min_samples_split\": 2, \"min_weight_fraction_leaf\": 0.0, \"monotonic_cst\": null, \"n_estimators\": 100, \"n_jobs\": 4, \"oob_score\": false, \"random_state\": 42, \"verbose\": 0, \"warm_start\": false}"
+      },
+      {
+        "model": "ExtraTrees",
+        "best_candidate_id": 10,
+        "kept_baseline": false,
+        "candidate_count": 13,
+        "cv_fits": 39,
+        "baseline_CV_MAE_t_ha": 0.48137273659340185,
+        "selected_CV_MAE_t_ha": 0.4760038789971527,
+        "CV_MAE_reduction_t_ha": 0.005368857596249166,
+        "selected_CV_RMSE_t_ha": 0.8627144051283283,
+        "selected_CV_R2": 0.4396047106372575,
+        "search_seconds": 12.936073841999814,
+        "selected_parameters": "{\"bootstrap\": false, \"ccp_alpha\": 0.0, \"criterion\": \"squared_error\", \"max_depth\": null, \"max_features\": 0.7, \"max_leaf_nodes\": null, \"max_samples\": null, \"min_impurity_decrease\": 0.0, \"min_samples_leaf\": 4, \"min_samples_split\": 2, \"min_weight_fraction_leaf\": 0.0, \"monotonic_cst\": null, \"n_estimators\": 100, \"n_jobs\": 4, \"oob_score\": false, \"random_state\": 42, \"verbose\": 0, \"warm_start\": false}"
+      },
+      {
+        "model": "XGBoost",
+        "best_candidate_id": 9,
+        "kept_baseline": false,
+        "candidate_count": 13,
+        "cv_fits": 39,
+        "baseline_CV_MAE_t_ha": 0.5074068050168274,
+        "selected_CV_MAE_t_ha": 0.44872033984316684,
+        "CV_MAE_reduction_t_ha": 0.05868646517366061,
+        "selected_CV_RMSE_t_ha": 0.8844916284630279,
+        "selected_CV_R2": 0.4109558732488361,
+        "search_seconds": 10.352837563000094,
+        "selected_parameters": "{\"base_score\": null, \"booster\": null, \"callbacks\": null, \"colsample_bylevel\": null, \"colsample_bynode\": null, \"colsample_bytree\": 0.8, \"device\": null, \"early_stopping_rounds\": null, \"enable_categorical\": false, \"eval_metric\": null, \"feature_types\": null, \"feature_weights\": null, \"gamma\": null, \"grow_policy\": null, \"importance_type\": null, \"interaction_constraints\": null, \"learning_rate\": 0.1, \"max_bin\": null, \"max_cat_threshold\": null, \"max_cat_to_onehot\": null, \"max_delta_step\": null, \"max_depth\": 4, \"max_leaves\": null, \"min_child_weight\": 1, \"missing\": NaN, \"monotone_constraints\": null, \"multi_strategy\": null, \"n_estimators\": 200, \"n_jobs\": 4, \"num_parallel_tree\": null, \"objective\": \"reg:squarederror\", \"random_state\": 42, \"reg_alpha\": 0.0, \"reg_lambda\": 1.0, \"sampling_method\": null, \"scale_pos_weight\": null, \"subsample\": 0.8, \"tree_method\": \"hist\", \"validate_parameters\": null, \"verbosity\": 0}"
+      },
+      {
+        "model": "GradientBoosting",
+        "best_candidate_id": 10,
+        "kept_baseline": false,
+        "candidate_count": 13,
+        "cv_fits": 39,
+        "baseline_CV_MAE_t_ha": 0.46131040049732014,
+        "selected_CV_MAE_t_ha": 0.45131256926025354,
+        "CV_MAE_reduction_t_ha": 0.009997831237066601,
+        "selected_CV_RMSE_t_ha": 0.8635746910977343,
+        "selected_CV_R2": 0.4384865177023337,
+        "search_seconds": 15.612188072000663,
+        "selected_parameters": "{\"alpha\": 0.9, \"ccp_alpha\": 0.0, \"criterion\": \"friedman_mse\", \"init\": null, \"learning_rate\": 0.1, \"loss\": \"squared_error\", \"max_depth\": 3, \"max_features\": null, \"max_leaf_nodes\": null, \"min_impurity_decrease\": 0.0, \"min_samples_leaf\": 1, \"min_samples_split\": 2, \"min_weight_fraction_leaf\": 0.0, \"n_estimators\": 100, \"n_iter_no_change\": null, \"random_state\": 42, \"subsample\": 0.8, \"tol\": 0.0001, \"validation_fraction\": 0.1, \"verbose\": 0, \"warm_start\": false}"
+      },
+      {
+        "model": "HistGradientBoosting",
+        "best_candidate_id": 3,
+        "kept_baseline": false,
+        "candidate_count": 13,
+        "cv_fits": 39,
+        "baseline_CV_MAE_t_ha": 0.5188792311375311,
+        "selected_CV_MAE_t_ha": 0.46036803617450306,
+        "CV_MAE_reduction_t_ha": 0.058511194963028035,
+        "selected_CV_RMSE_t_ha": 0.9075771032419233,
+        "selected_CV_R2": 0.3798061745970198,
+        "search_seconds": 14.094694444000197,
+        "selected_parameters": "{\"categorical_features\": \"from_dtype\", \"early_stopping\": false, \"interaction_cst\": null, \"l2_regularization\": 1.0, \"learning_rate\": 0.03, \"loss\": \"squared_error\", \"max_bins\": 255, \"max_depth\": 5, \"max_features\": 1.0, \"max_iter\": 100, \"max_leaf_nodes\": 15, \"min_samples_leaf\": 30, \"monotonic_cst\": null, \"n_iter_no_change\": 10, \"quantile\": null, \"random_state\": 42, \"scoring\": \"loss\", \"tol\": 1e-07, \"validation_fraction\": 0.1, \"verbose\": 0, \"warm_start\": false}"
+      },
+      {
+        "model": "CatBoost",
+        "best_candidate_id": 11,
+        "kept_baseline": false,
+        "candidate_count": 13,
+        "cv_fits": 39,
+        "baseline_CV_MAE_t_ha": 0.4889219656542296,
+        "selected_CV_MAE_t_ha": 0.46606024729031503,
+        "CV_MAE_reduction_t_ha": 0.02286171836391454,
+        "selected_CV_RMSE_t_ha": 0.8834833709419241,
+        "selected_CV_R2": 0.4122980446056467,
+        "search_seconds": 180.03075517799948,
+        "selected_parameters": "{\"allow_writing_files\": false, \"boosting_type\": \"Ordered\", \"cat_features\": [\"adm1_code\", \"mua_vu\"], \"depth\": 3, \"has_time\": true, \"iterations\": 300, \"l2_leaf_reg\": 10.0, \"learning_rate\": 0.03, \"loss_function\": \"RMSE\", \"nan_mode\": \"Min\", \"random_seed\": 42, \"random_strength\": 0.5, \"task_type\": \"CPU\", \"thread_count\": 4, \"verbose\": false}"
+      }
+    ],
+    "validation_scores_independent_after_tuning": false
+  },
   "target": "nang_suat_t_ha",
   "target_unit": "tonne_per_hectare",
   "feature_names": [
@@ -81,7 +181,7 @@
       "ccp_alpha": 0.0,
       "criterion": "squared_error",
       "max_depth": null,
-      "max_features": 1.0,
+      "max_features": 0.7,
       "max_leaf_nodes": null,
       "max_samples": null,
       "min_impurity_decrease": 0.0,
@@ -89,7 +189,7 @@
       "min_samples_split": 2,
       "min_weight_fraction_leaf": 0.0,
       "monotonic_cst": null,
-      "n_estimators": 200,
+      "n_estimators": 100,
       "n_jobs": 4,
       "oob_score": false,
       "random_state": 42,
@@ -101,15 +201,15 @@
       "ccp_alpha": 0.0,
       "criterion": "squared_error",
       "max_depth": null,
-      "max_features": 1.0,
+      "max_features": 0.7,
       "max_leaf_nodes": null,
       "max_samples": null,
       "min_impurity_decrease": 0.0,
-      "min_samples_leaf": 1,
+      "min_samples_leaf": 4,
       "min_samples_split": 2,
       "min_weight_fraction_leaf": 0.0,
       "monotonic_cst": null,
-      "n_estimators": 200,
+      "n_estimators": 100,
       "n_jobs": 4,
       "oob_score": false,
       "random_state": 42,
@@ -123,7 +223,7 @@
       "callbacks": null,
       "colsample_bylevel": null,
       "colsample_bynode": null,
-      "colsample_bytree": 1.0,
+      "colsample_bytree": 0.8,
       "device": null,
       "early_stopping_rounds": null,
       "enable_categorical": false,
@@ -134,14 +234,14 @@
       "grow_policy": null,
       "importance_type": null,
       "interaction_constraints": null,
-      "learning_rate": 0.05,
+      "learning_rate": 0.1,
       "max_bin": null,
       "max_cat_threshold": null,
       "max_cat_to_onehot": null,
       "max_delta_step": null,
-      "max_depth": 6,
+      "max_depth": 4,
       "max_leaves": null,
-      "min_child_weight": null,
+      "min_child_weight": 1,
       "missing": NaN,
       "monotone_constraints": null,
       "multi_strategy": null,
@@ -149,11 +249,11 @@
       "n_jobs": 4,
       "num_parallel_tree": null,
       "random_state": 42,
-      "reg_alpha": null,
+      "reg_alpha": 0.0,
       "reg_lambda": 1.0,
       "sampling_method": null,
       "scale_pos_weight": null,
-      "subsample": 1.0,
+      "subsample": 0.8,
       "tree_method": "hist",
       "validate_parameters": null,
       "verbosity": 0
@@ -175,7 +275,7 @@
       "n_estimators": 100,
       "n_iter_no_change": null,
       "random_state": 42,
-      "subsample": 1.0,
+      "subsample": 0.8,
       "tol": 0.0001,
       "validation_fraction": 0.1,
       "verbose": 0,
@@ -185,15 +285,15 @@
       "categorical_features": "from_dtype",
       "early_stopping": false,
       "interaction_cst": null,
-      "l2_regularization": 0.0,
-      "learning_rate": 0.1,
+      "l2_regularization": 1.0,
+      "learning_rate": 0.03,
       "loss": "squared_error",
       "max_bins": 255,
-      "max_depth": null,
+      "max_depth": 5,
       "max_features": 1.0,
       "max_iter": 100,
-      "max_leaf_nodes": 31,
-      "min_samples_leaf": 20,
+      "max_leaf_nodes": 15,
+      "min_samples_leaf": 30,
       "monotonic_cst": null,
       "n_iter_no_change": 10,
       "quantile": null,
@@ -205,16 +305,17 @@
       "warm_start": false
     },
     "CatBoost": {
-      "iterations": 500,
-      "learning_rate": 0.05,
-      "depth": 6,
-      "l2_leaf_reg": 3.0,
+      "iterations": 300,
+      "learning_rate": 0.03,
+      "depth": 3,
+      "l2_leaf_reg": 10.0,
       "loss_function": "RMSE",
       "nan_mode": "Min",
       "thread_count": 4,
       "random_seed": 42,
       "verbose": false,
       "has_time": true,
+      "random_strength": 0.5,
       "allow_writing_files": false,
       "boosting_type": "Ordered",
       "task_type": "CPU",
@@ -226,8 +327,8 @@
   },
   "top4": [
     "GradientBoosting",
+    "HistGradientBoosting",
     "ExtraTrees",
-    "RandomForest",
     "XGBoost"
   ],
   "best_base_on_validation": "GradientBoosting",
@@ -266,7 +367,7 @@
     "test": 104
   },
   "stacking_validation_score": null,
-  "stacking_validation_score_reason": "2016-2018 labels used to select bases and fit meta learner",
+  "stacking_validation_score_reason": "2016-2018 labels used to tune parameters, select bases and fit meta learner",
   "test_used_for_fitting_or_top4_selection": false,
   "test_used_for_model_selection": true,
   "saved_model": "CatBoost",
@@ -288,19 +389,19 @@
     "RMSE_t_ha": [
       "CatBoost",
       "GradientBoosting",
-      "RandomForest"
+      "ExtraTrees"
     ],
     "R2": [
       "CatBoost",
       "GradientBoosting",
-      "RandomForest"
+      "ExtraTrees"
     ]
   },
   "metric_vote_caveat": "RMSE and R2 rankings coincide on identical labels and rows; MAE breaks vote ties.",
   "saved_model_metrics": {
-    "MAE_t_ha": 0.4409734263806823,
-    "RMSE_t_ha": 0.7024982227256281,
-    "R2": 0.6266316332617698
+    "MAE_t_ha": 0.4160329421352914,
+    "RMSE_t_ha": 0.7063088908580574,
+    "R2": 0.6225700091899791
   },
   "saved_model_metrics_are_independent_after_selection": false,
   "random_state": 42,
@@ -331,7 +432,7 @@
     "Retrospective estimation with static 2020 rice mask.",
     "Observation windows must be complete; not pre-harvest forecasting.",
     "VCI 2000-2015 baseline unsuitable for forward OOF before 2016.",
-    "2016-2018 is development data for selection and meta fitting.",
+    "2016-2018 is development data for parameter tuning, base selection and meta fitting; not nested OOF.",
     "Same 2019-2022 test period already reported in an earlier experiment.",
     "No unseen-province test or statistical significance claim.",
     "Winner chosen using test metrics; new data needed for independent evaluation."
@@ -341,57 +442,57 @@
       "model": "RandomForest",
       "split": "test_2019_2022",
       "rows": 104,
-      "MAE_t_ha": 0.5472140216541995,
-      "RMSE_t_ha": 0.7831071441501717,
-      "R2": 0.5360304999610253
+      "MAE_t_ha": 0.55517876525941,
+      "RMSE_t_ha": 0.7763187537305546,
+      "R2": 0.544039505879663
     },
     {
       "model": "ExtraTrees",
       "split": "test_2019_2022",
       "rows": 104,
-      "MAE_t_ha": 0.505356578739492,
-      "RMSE_t_ha": 0.8129809714367039,
-      "R2": 0.4999564593373006
+      "MAE_t_ha": 0.5005488398293951,
+      "RMSE_t_ha": 0.7450600684076502,
+      "R2": 0.5800190068406416
     },
     {
       "model": "XGBoost",
       "split": "test_2019_2022",
       "rows": 104,
-      "MAE_t_ha": 0.5650071344457596,
-      "RMSE_t_ha": 0.8329235693299083,
-      "R2": 0.4751232164500271
+      "MAE_t_ha": 0.5184971839208715,
+      "RMSE_t_ha": 0.7706817045787889,
+      "R2": 0.5506371566614974
     },
     {
       "model": "GradientBoosting",
       "split": "test_2019_2022",
       "rows": 104,
-      "MAE_t_ha": 0.5186837413119709,
-      "RMSE_t_ha": 0.7294156128651498,
-      "R2": 0.597471003767641
+      "MAE_t_ha": 0.5041264084267876,
+      "RMSE_t_ha": 0.7284004124821314,
+      "R2": 0.598590703445478
     },
     {
       "model": "HistGradientBoosting",
       "split": "test_2019_2022",
       "rows": 104,
-      "MAE_t_ha": 0.5461699615891958,
-      "RMSE_t_ha": 0.783803793589259,
-      "R2": 0.5352046414207345
+      "MAE_t_ha": 0.6350250822212128,
+      "RMSE_t_ha": 0.860681325544253,
+      "R2": 0.439556520871347
     },
     {
       "model": "StackingTop4Ridge",
       "split": "test_2019_2022",
       "rows": 104,
-      "MAE_t_ha": 0.6129891635062565,
-      "RMSE_t_ha": 0.8436509062556065,
-      "R2": 0.46151623378049544
+      "MAE_t_ha": 0.6120273701651004,
+      "RMSE_t_ha": 0.8299457638023129,
+      "R2": 0.4788695075118644
     },
     {
       "model": "CatBoost",
       "split": "test_2019_2022",
       "rows": 104,
-      "MAE_t_ha": 0.4409734263806823,
-      "RMSE_t_ha": 0.7024982227256281,
-      "R2": 0.6266316332617698
+      "MAE_t_ha": 0.4160329421352914,
+      "RMSE_t_ha": 0.7063088908580574,
+      "R2": 0.6225700091899791
     }
   ]
 }
