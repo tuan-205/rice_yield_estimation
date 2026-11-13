@@ -38,3 +38,61 @@ dialog{max-height:88dvh;overflow-y:auto;overscroll-behavior:contain;scrollbar-wi
 .sidebar-collapsed .brand>.brand-text{display:none}
 
 .arrow-icon{width:14px;height:14px;display:inline-block;vertical-align:middle;flex-shrink:0}.upload-icon{width:22px;height:22px;display:inline-block;vertical-align:middle}.primary-button .arrow-icon{width:18px;height:18px}
+
+/* Bảng màu lúa chín: vàng hạt lúa, kem rơm và xanh lá non. */
+:root{
+  --ink:#3d481f;
+  --green:#68762b;
+  --muted:#7f8069;
+  --paper:#f7f2e4;
+  --line:#e7dcc0;
+  --accent:#d3a72d;
+  --body:#56593c;
+}
+body{background:linear-gradient(180deg,#faf6eb 0,var(--paper) 28%,#f4eedf 100%)}
+.sidebar,.card,.model-strip,.connection-chip,.select-trigger,.select-list,select,input[type=url],dialog,.dialog-header,.icon-button{background:#fffdf7}
+.sidebar{border-color:#e2d5b6}
+.topbar{background:#fbf5e6;border-color:#e2d5b6}
+.brand-mark{background:linear-gradient(145deg,#45551f,#758331);color:#f5dc73;box-shadow:0 8px 22px #606d2830}
+.nav-caption,.eyebrow,.small-label{color:#98814d}
+.nav-item{color:#777861}
+.nav-item.active{background:#f5e7b7;color:#59671f}
+.nav-item:hover{background:#faf0d3}
+.region-icon,.title-dot,.env-icon{color:#c59527}
+.dot{background:#82913a}.dot.muted{background:#b5aa8c}
+.breadcrumb strong,.text-button{color:#66742d}
+.edition{border-color:#dfd0aa;color:#887649;background:#fffaf0}
+.model-flag,.pill{background:#f4e5ae;color:#755d19}
+.segmented,.source-display{background:#f3ecd9}
+.segmented .selected{background:#fffdf8;box-shadow:0 2px 8px #6f5c2518}
+.step{border-color:#dccb9e;color:#8a6c20;background:#fff9e9}
+.select-trigger,.select-list,select,input[type=url]{border-color:#dfd2b3}
+.select-control.is-open .select-trigger{border-color:#b58a27;box-shadow:0 0 0 2px #f1e3b6}
+.select-option:hover,.select-option.is-active{background:#f9efd3}
+.select-option[aria-selected=true]{background:#f3e2a8;color:#56631f}
+.window-box,.method-note{background:#f7efd9;border-color:#e8d9b5}
+.window-box>span{color:#b98922}
+.primary-button{background:linear-gradient(135deg,#75832e,#596720);box-shadow:0 8px 18px #64722525}
+.primary-button:hover{background:linear-gradient(135deg,#687727,#4d5d19)}
+.form-message{color:#91621f}
+.result-card{background:linear-gradient(135deg,#3c4b1c 0%,#5f6c27 58%,#8b6c21 100%);box-shadow:0 18px 42px #4e56272b}
+.result-card:after{border-color:#f4d77525;box-shadow:0 0 0 30px #f4d7750c,0 0 0 60px #f4d7750a,0 0 0 90px #f4d77508}
+.result-eyebrow,.result-season,.result-comparison small{color:#e7d89e}
+.result-source{border-color:#f1d47750;color:#f5e7b8;background:#fff4c90c}
+.yield-number>span:first-child{color:#fff4c8}
+.yield-unit,.result-comparison strong,.export-button{color:#f7ebc2}
+.yield-unit small{color:#dccb90}
+.rice-symbol{color:#f0cf6357}
+.result-comparison{border-color:#f4dc862b}
+.export-button{border-color:#f1d77b52}
+.notice{background:#fff5d8;border-color:#e5c66f;color:#75551d}
+.legend-line.actual{background:#5c6b26}.legend-line.predicted{background:#d6a62b}
+tr.selected-model td{background:#f8edc9;color:#59671f}
+.upload-zone{border-color:#d7c18a;background:#fffbef}
+.status-icon{background:#f2e6b8;color:#657329}
+.status-icon.outline{background:#fffaf0;border-color:#e1d3af}
+.secondary-button{background:#f3e5b4;color:#596820;border-color:#dcca91}
+code{background:#f3ead3}
+dialog::backdrop{background:#3e421f70}
+html{scrollbar-color:#d3c295 transparent}
+::-webkit-scrollbar-thumb{background:#d3c295}
